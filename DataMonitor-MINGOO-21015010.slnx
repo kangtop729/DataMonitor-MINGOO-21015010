@@ -1,0 +1,8 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <BuildType Name="Debug" />
+    <BuildType Name="Release" />
+  </Configurations>
+  <Project Path="DataMonitor-MINGOO-21015010.vcxproj" Id="eb97e8c3-d49a-40c3-b59a-167540da608e" />
+</Solution>
