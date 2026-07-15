@@ -1,0 +1,56 @@
+# PoC 3: DataMonitor 구현 계획
+
+## 1. 목적
+
+콘솔에서 **현재 저장된 데이터 상태를 실시간으로 조회**할 수 있는 관리자 도구를 직접 구현해보는
+참고용 PoC다. JSON 파일로 저장된 데이터를 읽어, 사람이 보기 좋은 형태로 표시하는 것이 핵심이다.
+
+> `DataPersistence` PoC와는 별도 Git 저장소이므로 코드를 공유하지 않고, 엔티티/JSON 스키마를 이
+> 저장소 안에서 자체적으로 정의한다. PoC 전반의 리뷰/TDD 기대 수준은 [Overall/PLAN.md](../Overall/PLAN.md)
+> 3절 참고.
+
+## 2. 저장소 정보
+
+- Repository: `DataMonitor-MINGOO-21015010` (Public)
+- 기술 스택: C++ / Visual Studio, GoogleTest/GoogleMock
+- 영속성: JSON 파일을 읽기 전용으로 사용 (이 저장소 자체에서 스키마 정의)
+- JSON 라이브러리: nlohmann/json (single header, `src/ThirdParty/nlohmann/json.hpp`로 vendoring)
+
+## 3. 패키지 구조
+
+```
+DataMonitor-MINGOO-21015010/
+├── src/
+│   ├── Model/                        # 이 저장소 자체에서 정의하는 최소 엔티티
+│   ├── Repository/                   # 읽기 전용 JSON 로더 (자체 구현, 최소한의 인터페이스)
+│   ├── View/                         # 콘솔 테이블/요약 출력 포맷터
+│   ├── ThirdParty/nlohmann/json.hpp  # nlohmann/json single header
+│   └── main.cpp                      # 조회 루프 (수동 새로고침 또는 주기적 폴링)
+├── test/
+├── CLAUDE.md
+└── README.md
+```
+
+## 4. Phase 계획
+
+### Phase 1 — 저장소 연동
+- 이 저장소 자체에서 최소한의 엔티티/JSON 스키마를 정의하고, 읽기 전용 로더 구현
+- (참고용) DataPersistence PoC를 코드 리딩 차원에서 살펴볼 수는 있으나, 코드를 직접 가져오지 않는다
+
+### Phase 2 — 조회 화면 설계
+- 전체 목록 조회, 개수 요약(총 건수, 상태별 집계 등) 화면 구성
+- 필터/검색(예: 이름, 상태별) 기능 추가
+
+### Phase 3 — 실시간 갱신
+- 사용자가 "새로고침" 명령을 입력하면 파일을 다시 읽어 최신 상태 반영
+- (선택) 일정 주기로 자동 재조회하는 폴링 모드 지원
+
+### Phase 4 — 통합 및 (가벼운) 테스트
+- 핵심 시나리오(파일 변경 전/후 조회 결과가 달라지는지) 1개 정도에 대해 실패하는 테스트를 먼저
+  작성 → 통과시키는 간단한 TDD 사이클 수행
+
+## 5. 검증 기준
+
+- 원본 데이터 파일이 갱신되면, 재조회 시 최신 값이 반영될 것
+- 조회 전용 도구이므로 데이터를 변경하는 어떤 write 연산도 수행하지 않을 것
+- 영속성 방식이 JSON 파일이라는 점에서 Main 프로젝트와 "내용"이 일치할 것 (코드 재사용 여부는 무관)
