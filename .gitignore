@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# 조회 데모용 데이터 파일 (수동으로 준비하거나 다른 도구가 생성)
+items.json
+
 # User-specific files
 *.rsuser
 *.suo
