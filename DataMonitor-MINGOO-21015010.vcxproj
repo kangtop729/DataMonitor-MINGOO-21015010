@@ -77,7 +77,11 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Serialization\ItemSerialization.cpp" />
     <ClCompile Include="src\Repository\JsonItemReader.cpp" />
+    <ClCompile Include="src\View\SummaryView.cpp" />
     <ClCompile Include="test\JsonItemReaderTest.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'!='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="test\SummaryViewTest.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'!='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
   </ItemGroup>
@@ -86,6 +90,7 @@
     <ClInclude Include="src\Serialization\ItemSerialization.h" />
     <ClInclude Include="src\Repository\IItemReader.h" />
     <ClInclude Include="src\Repository\JsonItemReader.h" />
+    <ClInclude Include="src\View\SummaryView.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
